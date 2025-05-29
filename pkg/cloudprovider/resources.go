@@ -126,11 +126,6 @@ type ICloudRegion interface {
 	GetIBucketById(name string) (ICloudBucket, error)
 	GetIBucketByName(name string) (ICloudBucket, error)
 
-	GetIElasticcaches() ([]ICloudElasticcache, error)
-	GetIElasticcacheSkus() ([]ICloudElasticcacheSku, error)
-	GetIElasticcacheById(id string) (ICloudElasticcache, error)
-	CreateIElasticcaches(ec *SCloudElasticCacheInput) (ICloudElasticcache, error)
-
 	GetCloudEnv() string
 	GetProvider() string
 
@@ -965,138 +960,6 @@ type ICloudInterfaceAddress interface {
 	IsPrimary() bool
 }
 
-type ICloudElasticcacheSku interface {
-	GetName() string
-	GetGlobalId() string
-	GetZoneId() string
-	GetSlaveZoneId() string
-	GetEngineArch() string
-	GetLocalCategory() string
-	GetPrepaidStatus() string
-	GetPostpaidStatus() string
-	GetEngine() string
-	GetEngineVersion() string
-	GetCpuArch() string
-	GetStorageType() string
-	GetMemorySizeMb() int
-	GetPerformanceType() string
-	GetNodeType() string
-	GetDiskSizeGb() int
-	GetShardNum() int
-	GetMaxShardNum() int
-	GetReplicasNum() int
-	GetMaxReplicasNum() int
-	GetMaxClients() int
-	GetMaxConnections() int
-	GetMaxInBandwidthMb() int
-	GetMaxMemoryMb() int
-	GetQps() int
-}
-
-type ICloudElasticcache interface {
-	IVirtualResource
-	IBillingResource
-
-	GetInstanceType() string
-	GetCapacityMB() int
-	GetArchType() string
-	GetNodeType() string
-	GetEngine() string
-	GetEngineVersion() string
-
-	GetVpcId() string
-	GetZoneId() string
-	GetNetworkType() string
-	GetNetworkId() string
-	GetBandwidth() int
-	GetConnections() int
-
-	GetPrivateDNS() string
-	GetPrivateIpAddr() string
-	GetPrivateConnectPort() int
-	GetPublicDNS() string
-	GetPublicIpAddr() string
-	GetPublicConnectPort() int
-
-	GetMaintainStartTime() string
-	GetMaintainEndTime() string
-
-	GetAuthMode() string
-	GetSecurityGroupIds() ([]string, error)
-
-	GetICloudElasticcacheAccounts() ([]ICloudElasticcacheAccount, error)
-	GetICloudElasticcacheAcls() ([]ICloudElasticcacheAcl, error)
-	GetICloudElasticcacheBackups() ([]ICloudElasticcacheBackup, error)
-	GetICloudElasticcacheParameters() ([]ICloudElasticcacheParameter, error)
-
-	GetICloudElasticcacheAccount(accountId string) (ICloudElasticcacheAccount, error)
-	GetICloudElasticcacheAcl(aclId string) (ICloudElasticcacheAcl, error)
-	GetICloudElasticcacheBackup(backupId string) (ICloudElasticcacheBackup, error)
-
-	Restart() error
-	Delete() error
-	ChangeInstanceSpec(spec string) error
-	SetMaintainTime(maintainStartTime, maintainEndTime string) error
-	AllocatePublicConnection(port int) (string, error) // return url & error info
-	ReleasePublicConnection() error
-
-	CreateAccount(account SCloudElasticCacheAccountInput) (ICloudElasticcacheAccount, error)
-	CreateAcl(aclName, securityIps string) (ICloudElasticcacheAcl, error)
-	CreateBackup(desc string) (ICloudElasticcacheBackup, error)
-	FlushInstance(input SCloudElasticCacheFlushInstanceInput) error
-	UpdateAuthMode(noPasswordAccess bool, password string) error
-	UpdateInstanceParameters(config jsonutils.JSONObject) error
-	UpdateBackupPolicy(config SCloudElasticCacheBackupPolicyUpdateInput) error
-
-	UpdateSecurityGroups(secgroupIds []string) error
-}
-
-type ICloudElasticcacheAccount interface {
-	ICloudResource
-
-	GetAccountType() string
-	GetAccountPrivilege() string
-
-	Delete() error
-	ResetPassword(input SCloudElasticCacheAccountResetPasswordInput) error
-	UpdateAccount(input SCloudElasticCacheAccountUpdateInput) error
-}
-
-type ICloudElasticcacheAcl interface {
-	ICloudResource
-
-	GetIpList() string
-
-	Delete() error
-	UpdateAcl(securityIps string) error
-}
-
-type ICloudElasticcacheBackup interface {
-	ICloudResource
-
-	GetBackupSizeMb() int
-	GetBackupType() string
-	GetBackupMode() string
-	GetDownloadURL() string
-
-	GetStartTime() time.Time
-	GetEndTime() time.Time
-
-	Delete() error
-	RestoreInstance(instanceId string) error
-}
-
-type ICloudElasticcacheParameter interface {
-	ICloudResource
-
-	GetParameterKey() string
-	GetParameterValue() string
-	GetParameterValueRange() string
-	GetDescription() string
-	GetModifiable() bool
-	GetForceRestart() bool
-}
-
 type ICloudEvent interface {
 	GetName() string
 	GetService() string
@@ -1413,8 +1276,6 @@ type ICloudElasticSearch interface {
 	GetNetworkId() string
 	GetZoneId() string
 	IsMultiAz() bool
-
-	GetAccessInfo() (*ElasticSearchAccessInfo, error)
 
 	Delete() error
 }

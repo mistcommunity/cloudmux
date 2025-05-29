@@ -85,22 +85,6 @@ func (self *SRegion) GetINetworkInterfaces() ([]cloudprovider.ICloudNetworkInter
 	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetINetworkInterfaces")
 }
 
-func (self *SRegion) GetIElasticcaches() ([]cloudprovider.ICloudElasticcache, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIElasticcaches")
-}
-
-func (self *SRegion) GetIElasticcacheSkus() ([]cloudprovider.ICloudElasticcacheSku, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIElasticcacheSkus")
-}
-
-func (self *SRegion) CreateIElasticcaches(ec *cloudprovider.SCloudElasticCacheInput) (cloudprovider.ICloudElasticcache, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "CreateIElasticcaches")
-}
-
-func (self *SRegion) GetIElasticcacheById(id string) (cloudprovider.ICloudElasticcache, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIElasticcacheById")
-}
-
 func (self *SRegion) GetICloudEvents(start time.Time, end time.Time, withReadEvent bool) ([]cloudprovider.ICloudEvent, error) {
 	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetICloudEvents")
 }
