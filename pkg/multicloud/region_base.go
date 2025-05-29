@@ -214,30 +214,6 @@ func (self *SRegionVpcBase) GetIVpcById(id string) (cloudprovider.ICloudVpc, err
 type SRegionOssBase struct {
 }
 
-func (self *SRegionOssBase) CreateIBucket(name string, storageClassStr string, acl string) error {
-	return errors.Wrapf(cloudprovider.ErrNotImplemented, "CreateIBucket")
-}
-
-func (self *SRegionOssBase) GetIBucketById(id string) (cloudprovider.ICloudBucket, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIBucketById")
-}
-
-func (self *SRegionOssBase) GetIBuckets() ([]cloudprovider.ICloudBucket, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIBuckets")
-}
-
-func (self *SRegionOssBase) IBucketExist(name string) (bool, error) {
-	return false, cloudprovider.ErrNotImplemented
-}
-
-func (self *SRegionOssBase) GetIBucketByName(name string) (cloudprovider.ICloudBucket, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIBucketByName")
-}
-
-func (self *SRegionOssBase) DeleteIBucket(name string) error {
-	return errors.Wrapf(cloudprovider.ErrNotImplemented, "DeleteIBucket")
-}
-
 type SRegionSecurityGroupBase struct {
 }
 
