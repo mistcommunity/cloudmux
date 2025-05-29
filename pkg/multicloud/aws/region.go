@@ -1,4 +1,3 @@
-
 package aws
 
 import (
@@ -262,7 +261,7 @@ func (self *SRegion) eksRequest(apiName, path string, params map[string]interfac
 	return self.client.invoke(self.RegionId, EKS_SERVICE_NAME, EKS_SERVICE_ID, "2017-11-01", apiName, path, params, retval, true)
 }
 
-/////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////
 func (self *SRegion) GetZones(id string) ([]SZone, error) {
 	params := map[string]string{
 		"Filter.1.Name":    "region-name",
@@ -557,111 +556,6 @@ func (self *SRegion) GetCloudEnv() string {
 	return self.client.accessUrl
 }
 
-func (self *SRegion) GetILoadBalancers() ([]cloudprovider.ICloudLoadbalancer, error) {
-	ret := []cloudprovider.ICloudLoadbalancer{}
-	marker := ""
-	for {
-		part, marker, err := self.GetLoadbalancers("", marker)
-		if err != nil {
-			return nil, errors.Wrapf(err, "GetLoadbalancers")
-		}
-		for i := range part {
-			part[i].region = self
-			ret = append(ret, &part[i])
-		}
-		if len(marker) == 0 || len(part) == 0 {
-			break
-		}
-	}
-	return ret, nil
-}
-
-func (self *SRegion) GetLoadBalancer(id string) (*SElb, error) {
-	part, _, err := self.GetLoadbalancers(id, "")
-	if err != nil {
-		return nil, errors.Wrapf(err, "GetLoadbalancers")
-	}
-	for i := range part {
-		if part[i].GetGlobalId() == id {
-			part[i].region = self
-			return &part[i], nil
-		}
-	}
-	return nil, errors.Wrap(cloudprovider.ErrNotFound, id)
-}
-
-func (self *SRegion) GetILoadBalancerById(id string) (cloudprovider.ICloudLoadbalancer, error) {
-	lb, err := self.GetLoadBalancer(id)
-	if err != nil {
-		return nil, err
-	}
-	return lb, nil
-}
-
-func (self *SRegion) GetElbAttributes(id string) (map[string]string, error) {
-	ret := struct {
-		Attributes []struct {
-			Key   string
-			Value string
-		} `xml:"Attributes>member"`
-	}{}
-	params := map[string]string{"LoadBalancerArn": id}
-	err := self.elbRequest("DescribeLoadBalancerAttributes", params, &ret)
-	if err != nil {
-		return nil, err
-	}
-	result := map[string]string{}
-	for _, attr := range ret.Attributes {
-		result[attr.Key] = attr.Value
-	}
-	return result, nil
-}
-
-func (self *SRegion) GetILoadBalancerAclById(aclId string) (cloudprovider.ICloudLoadbalancerAcl, error) {
-	return nil, cloudprovider.ErrNotSupported
-}
-
-func (self *SRegion) GetILoadBalancerCertificateById(certId string) (cloudprovider.ICloudLoadbalancerCertificate, error) {
-	certs, err := self.GetILoadBalancerCertificates()
-	if err != nil {
-		return nil, errors.Wrap(err, "GetILoadBalancerCertificates")
-	}
-
-	for i := range certs {
-		if certs[i].GetId() == certId {
-			return certs[i], nil
-		}
-	}
-
-	return nil, errors.Wrap(cloudprovider.ErrNotFound, "GetILoadBalancerCertificateById")
-}
-
-func (self *SRegion) GetILoadBalancerAcls() ([]cloudprovider.ICloudLoadbalancerAcl, error) {
-	return nil, cloudprovider.ErrNotSupported
-}
-
-func (self *SRegion) GetILoadBalancerCertificates() ([]cloudprovider.ICloudLoadbalancerCertificate, error) {
-	certs, err := self.ListServerCertificates()
-	if err != nil {
-		return nil, err
-	}
-	ret := []cloudprovider.ICloudLoadbalancerCertificate{}
-	for i := range certs {
-		certs[i].region = self
-		ret = append(ret, &certs[i])
-	}
-
-	return ret, nil
-}
-
-func (self *SRegion) CreateILoadBalancer(opts *cloudprovider.SLoadbalancerCreateOptions) (cloudprovider.ICloudLoadbalancer, error) {
-	lb, err := self.CreateLoadbalancer(opts)
-	if err != nil {
-		return nil, errors.Wrapf(err, "CreateLoadbalancer")
-	}
-	return lb, nil
-}
-
 func (region *SRegion) GetIBuckets() ([]cloudprovider.ICloudBucket, error) {
 	iBuckets, err := region.client.getIBuckets()
 	if err != nil {
@@ -774,10 +668,6 @@ func (region *SRegion) getS3WebsiteEndpoint() string {
 
 func (region *SRegion) getEc2Endpoint() string {
 	return region.RegionEndpoint
-}
-
-func (self *SRegion) CreateILoadBalancerAcl(acl *cloudprovider.SLoadbalancerAccessControlList) (cloudprovider.ICloudLoadbalancerAcl, error) {
-	return nil, cloudprovider.ErrNotSupported
 }
 
 func (self *SRegion) GetSkus(zoneId string) ([]cloudprovider.ICloudSku, error) {

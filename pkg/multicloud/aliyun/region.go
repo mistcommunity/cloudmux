@@ -3,17 +3,14 @@ package aliyun
 import (
 	"fmt"
 	"strings"
-	"time"
 
 	"github.com/aliyun/alibaba-cloud-sdk-go/sdk"
-	alierr "github.com/aliyun/alibaba-cloud-sdk-go/sdk/errors"
 	"github.com/aliyun/alibaba-cloud-sdk-go/services/ecs"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 
 	"yunion.io/x/jsonutils"
 	"yunion.io/x/log"
 	"yunion.io/x/pkg/errors"
-	"yunion.io/x/pkg/util/regutils"
 	"yunion.io/x/pkg/utils"
 
 	api "yunion.io/x/cloudmux/pkg/apis/compute"
@@ -235,10 +232,6 @@ func (self *SRegion) kvsRequest(action string, params map[string]string) (jsonut
 	client, err := self.getSdkClient()
 	if err != nil {
 		return nil, err
-	}
-
-	if _, ok := params["RegionId"]; ok {
-		params["RegionId"] = transRegionIdFromEcsRegionId(self, "redis")
 	}
 
 	params = self.client.SetResourceGropuId(params)
@@ -884,188 +877,6 @@ func (region *SRegion) CreateISecurityGroup(opts *cloudprovider.SecurityGroupCre
 		return nil, err
 	}
 	return region.GetISecurityGroupById(externalId)
-}
-
-func (region *SRegion) GetILoadBalancers() ([]cloudprovider.ICloudLoadbalancer, error) {
-	lbs, err := region.GetLoadbalancers(nil)
-	if err != nil {
-		return nil, err
-	}
-	ilbs := []cloudprovider.ICloudLoadbalancer{}
-	for i := 0; i < len(lbs); i++ {
-		lbs[i].region = region
-		ilbs = append(ilbs, &lbs[i])
-	}
-	return ilbs, nil
-}
-
-func (region *SRegion) GetILoadBalancerById(loadbalancerId string) (cloudprovider.ICloudLoadbalancer, error) {
-	return region.GetLoadbalancerDetail(loadbalancerId)
-}
-
-func (region *SRegion) GetILoadBalancerCertificateById(certId string) (cloudprovider.ICloudLoadbalancerCertificate, error) {
-	certs, err := region.GetLoadbalancerServerCertificates()
-	if err != nil {
-		return nil, err
-	}
-	for i := 0; i < len(certs); i++ {
-		if certs[i].GetGlobalId() == certId {
-			certs[i].region = region
-			return &certs[i], nil
-		}
-	}
-	return nil, cloudprovider.ErrNotFound
-}
-
-func (region *SRegion) CreateILoadBalancerCertificate(cert *cloudprovider.SLoadbalancerCertificate) (cloudprovider.ICloudLoadbalancerCertificate, error) {
-	params := map[string]string{}
-	params["RegionId"] = region.RegionId
-	params["ServerCertificateName"] = cert.Name
-	params["PrivateKey"] = cert.PrivateKey
-	params["ServerCertificate"] = cert.Certificate
-	body, err := region.lbRequest("UploadServerCertificate", params)
-	if err != nil {
-		return nil, err
-	}
-	certID, err := body.GetString("ServerCertificateId")
-	if err != nil {
-		return nil, err
-	}
-	return region.GetILoadBalancerCertificateById(certID)
-}
-
-func (region *SRegion) GetILoadBalancerAclById(aclId string) (cloudprovider.ICloudLoadbalancerAcl, error) {
-	return region.GetLoadbalancerAclDetail(aclId)
-}
-
-func (region *SRegion) GetILoadBalancerAcls() ([]cloudprovider.ICloudLoadbalancerAcl, error) {
-	acls, err := region.GetLoadBalancerAcls()
-	if err != nil {
-		return nil, err
-	}
-	iAcls := []cloudprovider.ICloudLoadbalancerAcl{}
-	for i := 0; i < len(acls); i++ {
-		acls[i].region = region
-		iAcls = append(iAcls, &acls[i])
-	}
-	return iAcls, nil
-}
-
-func (region *SRegion) GetILoadBalancerCertificates() ([]cloudprovider.ICloudLoadbalancerCertificate, error) {
-	certificates, err := region.GetLoadbalancerServerCertificates()
-	if err != nil {
-		return nil, err
-	}
-	iCertificates := []cloudprovider.ICloudLoadbalancerCertificate{}
-	for i := 0; i < len(certificates); i++ {
-		certificates[i].region = region
-		iCertificates = append(iCertificates, &certificates[i])
-	}
-	return iCertificates, nil
-}
-
-func (region *SRegion) CreateILoadBalancer(loadbalancer *cloudprovider.SLoadbalancerCreateOptions) (cloudprovider.ICloudLoadbalancer, error) {
-	params := map[string]string{}
-	params["RegionId"] = region.RegionId
-	params["LoadBalancerName"] = loadbalancer.Name
-	if len(loadbalancer.ZoneId) > 0 {
-		params["MasterZoneId"] = transZoneIdFromEcsZoneId(region, "elb", loadbalancer.ZoneId)
-	}
-
-	if len(loadbalancer.VpcId) > 0 {
-		params["VpcId"] = loadbalancer.VpcId
-	}
-
-	if len(loadbalancer.NetworkIds) > 0 {
-		params["VSwitchId"] = loadbalancer.NetworkIds[0]
-	}
-
-	if len(loadbalancer.Address) > 0 {
-		params["Address"] = loadbalancer.Address
-	}
-
-	if len(loadbalancer.AddressType) > 0 {
-		params["AddressType"] = loadbalancer.AddressType
-	}
-
-	if len(loadbalancer.LoadbalancerSpec) > 0 {
-		params["LoadBalancerSpec"] = loadbalancer.LoadbalancerSpec
-	}
-
-	if len(loadbalancer.ChargeType) > 0 {
-		params["InternetChargeType"] = "payby" + loadbalancer.ChargeType
-	}
-
-	if len(loadbalancer.ProjectId) > 0 {
-		params["ResourceGroupId"] = loadbalancer.ProjectId
-	}
-
-	if loadbalancer.ChargeType == api.LB_CHARGE_TYPE_BY_BANDWIDTH && loadbalancer.EgressMbps > 0 {
-		params["Bandwidth"] = fmt.Sprintf("%d", loadbalancer.EgressMbps)
-	}
-
-	body, err := region.lbRequest("CreateLoadBalancer", params)
-	if err != nil {
-		return nil, err
-	}
-	loadBalancerID, err := body.GetString("LoadBalancerId")
-	if err != nil {
-		return nil, err
-	}
-	region.SetResourceTags(ALIYUN_SERVICE_SLB, "instance", loadBalancerID, loadbalancer.Tags, false)
-	iLoadbalancer, err := region.GetLoadbalancerDetail(loadBalancerID)
-	if err != nil {
-		return nil, err
-	}
-	return iLoadbalancer, cloudprovider.WaitStatus(iLoadbalancer, api.LB_STATUS_ENABLED, time.Second*5, time.Minute*5)
-}
-
-func (region *SRegion) AddAccessControlListEntry(aclId string, entrys []cloudprovider.SLoadbalancerAccessControlListEntry) error {
-	params := map[string]string{}
-	params["RegionId"] = region.RegionId
-	params["AclId"] = aclId
-	aclArray := jsonutils.NewArray()
-	for i := 0; i < len(entrys); i++ {
-		//阿里云AclEntrys参数必须是CIDR格式的。
-		if regutils.MatchIPAddr(entrys[i].CIDR) {
-			entrys[i].CIDR += "/32"
-		}
-		aclArray.Add(jsonutils.Marshal(map[string]string{"entry": entrys[i].CIDR, "comment": entrys[i].Comment}))
-	}
-	if aclArray.Length() == 0 {
-		return nil
-	}
-	params["AclEntrys"] = aclArray.String()
-	_, err := region.lbRequest("AddAccessControlListEntry", params)
-	return err
-}
-
-func (region *SRegion) CreateILoadBalancerAcl(acl *cloudprovider.SLoadbalancerAccessControlList) (cloudprovider.ICloudLoadbalancerAcl, error) {
-	params := map[string]string{}
-	params["RegionId"] = region.RegionId
-	params["AclName"] = acl.Name
-	var body jsonutils.JSONObject
-	var err error
-	for i := 0; i < 20; i++ {
-		body, err = region.lbRequest("CreateAccessControlList", params)
-		if err == nil {
-			break
-		}
-		if e, ok := errors.Cause(err).(*alierr.ServerError); ok && e.ErrorCode() == "AclNameExist" {
-			params["AclName"] = fmt.Sprintf("%s-%d", acl.Name, i)
-			continue
-		}
-		return nil, err
-	}
-	aclId, err := body.GetString("AclId")
-	if err != nil {
-		return nil, err
-	}
-	iAcl, err := region.GetLoadbalancerAclDetail(aclId)
-	if err != nil {
-		return nil, err
-	}
-	return iAcl, region.AddAccessControlListEntry(aclId, acl.Entrys)
 }
 
 func (region *SRegion) GetIBuckets() ([]cloudprovider.ICloudBucket, error) {

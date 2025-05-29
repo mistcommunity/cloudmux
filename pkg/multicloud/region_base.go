@@ -238,45 +238,6 @@ func (self *SRegionOssBase) DeleteIBucket(name string) error {
 	return errors.Wrapf(cloudprovider.ErrNotImplemented, "DeleteIBucket")
 }
 
-type SRegionLbBase struct {
-}
-
-func (self *SRegionLbBase) GetILoadBalancers() ([]cloudprovider.ICloudLoadbalancer, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetILoadBalancers")
-}
-
-func (self *SRegionLbBase) GetILoadBalancerAcls() ([]cloudprovider.ICloudLoadbalancerAcl, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetILoadBalancerAcls")
-}
-
-func (self *SRegionLbBase) GetILoadBalancerCertificates() ([]cloudprovider.ICloudLoadbalancerCertificate, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetILoadBalancerCertificates")
-}
-
-func (self *SRegionLbBase) GetILoadBalancerById(loadbalancerId string) (cloudprovider.ICloudLoadbalancer, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetILoadBalancerById")
-}
-
-func (self *SRegionLbBase) GetILoadBalancerAclById(aclId string) (cloudprovider.ICloudLoadbalancerAcl, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetILoadBalancerAclById")
-}
-
-func (self *SRegionLbBase) GetILoadBalancerCertificateById(certId string) (cloudprovider.ICloudLoadbalancerCertificate, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetILoadBalancerCertificateById")
-}
-
-func (self *SRegionLbBase) CreateILoadBalancer(loadbalancer *cloudprovider.SLoadbalancerCreateOptions) (cloudprovider.ICloudLoadbalancer, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "CreateILoadBalancer")
-}
-
-func (self *SRegionLbBase) CreateILoadBalancerAcl(acl *cloudprovider.SLoadbalancerAccessControlList) (cloudprovider.ICloudLoadbalancerAcl, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "CreateILoadBalancerAcl")
-}
-
-func (self *SRegionLbBase) CreateILoadBalancerCertificate(cert *cloudprovider.SLoadbalancerCertificate) (cloudprovider.ICloudLoadbalancerCertificate, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "CreateILoadBalancerCertificate")
-}
-
 type SRegionSecurityGroupBase struct {
 }
 

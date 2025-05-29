@@ -1,4 +1,3 @@
-
 package nutanix
 
 import (
@@ -18,7 +17,6 @@ import (
 type SRegion struct {
 	multicloud.SRegion
 	multicloud.SNoObjectStorageRegion
-	multicloud.SNoLbRegion
 
 	cli *SNutanixClient
 }

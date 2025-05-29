@@ -1,4 +1,3 @@
-
 package google
 
 import (
@@ -79,19 +78,6 @@ func (self *SGlobalRegion) GetCapabilities() []string {
 		cloudprovider.CLOUD_CAPABILITY_EIP + cloudprovider.READ_ONLY_SUFFIX,
 		cloudprovider.CLOUD_CAPABILITY_LOADBALANCER + cloudprovider.READ_ONLY_SUFFIX,
 	}
-}
-
-func (self *SGlobalRegion) GetILoadBalancers() ([]cloudprovider.ICloudLoadbalancer, error) {
-	lbs, err := self.GetGlobalLoadbalancers()
-	if err != nil {
-		return nil, errors.Wrap(err, "GetGlobalLoadbalancers")
-	}
-	ilbs := []cloudprovider.ICloudLoadbalancer{}
-	for i := range lbs {
-		lbs[i].region = self
-		ilbs = append(ilbs, &lbs[i])
-	}
-	return ilbs, nil
 }
 
 func (self *SGlobalRegion) Delete(id string) error {

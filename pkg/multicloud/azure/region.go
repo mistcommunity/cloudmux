@@ -1,4 +1,3 @@
-
 package azure
 
 import (
@@ -385,85 +384,6 @@ func (region *SRegion) GetISecurityGroupById(secgroupId string) (cloudprovider.I
 
 func (region *SRegion) CreateISecurityGroup(opts *cloudprovider.SecurityGroupCreateInput) (cloudprovider.ICloudSecurityGroup, error) {
 	return region.CreateSecurityGroup(opts)
-}
-
-func (region *SRegion) GetILoadBalancers() ([]cloudprovider.ICloudLoadbalancer, error) {
-	lbs, err := region.GetLoadbalancers()
-	if err != nil {
-		return nil, err
-	}
-	ret := []cloudprovider.ICloudLoadbalancer{}
-	for i := range lbs {
-		lbs[i].region = region
-		ret = append(ret, &lbs[i])
-	}
-	return ret, nil
-}
-
-func (region *SRegion) GetILoadBalancerById(loadbalancerId string) (cloudprovider.ICloudLoadbalancer, error) {
-	lb := SLoadbalancer{}
-	params := url.Values{}
-	params.Set("api-version", "2021-02-01")
-	err := region.get(loadbalancerId, params, &lb)
-	if err != nil {
-		return nil, errors.Wrapf(err, "get")
-	}
-
-	lb.region = region
-	return &lb, nil
-}
-
-func (region *SRegion) GetILoadBalancerAclById(aclId string) (cloudprovider.ICloudLoadbalancerAcl, error) {
-	return nil, errors.Wrap(cloudprovider.ErrNotSupported, "GetILoadBalancerAclById")
-}
-
-func (region *SRegion) GetILoadBalancerCertificateById(certId string) (cloudprovider.ICloudLoadbalancerCertificate, error) {
-	segs := strings.Split(certId, "/sslCertificates")
-	if len(segs[0]) > 0 {
-		lb, err := region.GetLoadbalancer(segs[0])
-		if err != nil {
-			return nil, errors.Wrap(err, "GetILoadBalancerById")
-		}
-		for i := range lb.Properties.SSLCertificates {
-			ssl := &lb.Properties.SSLCertificates[i]
-			ssl.region = region
-			if ssl.GetGlobalId() == certId {
-				return ssl, nil
-			}
-		}
-	}
-	return nil, errors.Wrap(cloudprovider.ErrNotFound, certId)
-}
-
-func (region *SRegion) GetILoadBalancerCertificates() ([]cloudprovider.ICloudLoadbalancerCertificate, error) {
-	lbs, err := region.GetLoadbalancerCertificates()
-	if err != nil {
-		return nil, errors.Wrap(err, "GetILoadBalancers")
-	}
-
-	ret := []cloudprovider.ICloudLoadbalancerCertificate{}
-	for i := range lbs {
-		lbs[i].region = region
-		ret = append(ret, &lbs[i])
-	}
-
-	return ret, nil
-}
-
-func (region *SRegion) CreateILoadBalancerCertificate(cert *cloudprovider.SLoadbalancerCertificate) (cloudprovider.ICloudLoadbalancerCertificate, error) {
-	return nil, errors.Wrap(cloudprovider.ErrNotImplemented, "CreateILoadBalancerCertificate")
-}
-
-func (region *SRegion) GetILoadBalancerAcls() ([]cloudprovider.ICloudLoadbalancerAcl, error) {
-	return nil, errors.Wrap(cloudprovider.ErrNotSupported, "GetILoadBalancerAcls")
-}
-
-func (region *SRegion) CreateILoadBalancer(loadbalancer *cloudprovider.SLoadbalancerCreateOptions) (cloudprovider.ICloudLoadbalancer, error) {
-	return nil, errors.Wrap(cloudprovider.ErrNotImplemented, "CreateILoadBalancer")
-}
-
-func (region *SRegion) CreateILoadBalancerAcl(acl *cloudprovider.SLoadbalancerAccessControlList) (cloudprovider.ICloudLoadbalancerAcl, error) {
-	return nil, errors.Wrap(cloudprovider.ErrNotImplemented, "CreateILoadBalancerAcl")
 }
 
 func (region *SRegion) GetIBuckets() ([]cloudprovider.ICloudBucket, error) {

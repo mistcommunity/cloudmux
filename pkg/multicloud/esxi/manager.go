@@ -1,4 +1,3 @@
-
 package esxi
 
 import (
@@ -106,7 +105,6 @@ type SESXiClient struct {
 	multicloud.SRegion
 	multicloud.SRegionEipBase
 	multicloud.SNoObjectStorageRegion
-	multicloud.SRegionLbBase
 
 	client  *govmomi.Client
 	context context.Context

@@ -1,4 +1,3 @@
-
 package proxmox
 
 import (
@@ -17,7 +16,6 @@ type SRegion struct {
 	multicloud.SRegion
 	multicloud.SRegionEipBase
 	multicloud.SNoObjectStorageRegion
-	multicloud.SRegionLbBase
 
 	client *SProxmoxClient
 }
