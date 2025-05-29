@@ -12,94 +12,57 @@ import (
 )
 
 type SCloudaccountCredential struct {
-	// 用户名 (openstack, esxi)
+	// Username (openstack, esxi)
 	Username string `json:"username"`
 
-	// 密码 (openstack, esxi)
+	// Password (openstack, esxi)
 	Password string `json:"password"`
 
-	// 秘钥id (Aliyun, Aws)
+	// Key id (Aliyun, Aws)
 	AccessKeyId string `json:"access_key_id"`
 
-	// 秘钥key (Aliyun, Aws)
+	// Key (Aliyun, Aws)
 	AccessKeySecret string `json:"access_key_secret"`
 
-	// 环境 (Azure, Aws, aliyun)
+	// Environment (Azure, Aws, aliyun)
 	Environment string `json:"environment"`
 
-	// 目录ID (Azure)
+	// Directory id (Azure)
 	DirectoryId string `json:"directory_id"`
 
-	// 客户端ID (Azure)
+	// Client id (Azure)
 	ClientId string `json:"client_id"`
 
-	// 客户端秘钥 (Azure)
+	// Client secret key (Azure)
 	ClientSecret string `json:"client_secret"`
 
-	// 主机IP (esxi)
+	// Host IP (esxi)
 	Host string `json:"host"`
-
-	// 主机端口 (esxi)
+	// Host port (esxi)
 	Port int `json:"port"`
 
-	// 飞天允许的最高组织id, 默认为1
+	// The highest organization id allowed by FeiTian, ​​default is 1
 	OrganizationId int `json:"organization_id"`
 
-	// Google服务账号email (gcp)
+	// Google service account email (gcp)
 	GCPClientEmail string `json:"gcp_client_email"`
-	// Google服务账号project id (gcp)
+	// Google service account project id (gcp)
 	GCPProjectId string `json:"gcp_project_id"`
-	// Google服务账号秘钥id (gcp)
+	// Google service account key id (gcp)
 	GCPPrivateKeyId string `json:"gcp_private_key_id"`
-	// Google服务账号秘钥 (gcp)
+	// Google service account key (gcp)
 	GCPPrivateKey string `json:"gcp_private_key"`
 
 	RegionId string
 }
 
 type SCloudaccount struct {
-	// 账号信息，各个平台字段不尽相同，以下是各个平台账号创建所需要的字段
-	//
-	//
-	//
-	// | 云平台     |字段                | 翻译              | 是否必传  | 默认值    | 可否更新      | 获取方式   |
-	// | ------     |------              | ------            | --------- | --------  |--------       |--------    |
-	// |Aliyun      |access_key_id       |秘钥ID             | 是        |            |    是        |            |
-	// |Aliyun      |access_key_secret   |秘钥Key            | 是        |            |    是        |            |
-	// |Qcloud      |app_id              |APP ID             | 是        |            |    否        |            |
-	// |Qcloud      |secret_id           |秘钥ID             | 是        |            |    是        |            |
-	// |Qcloud      |secret_key          |秘钥Key            | 是        |            |    是        |            |
-	// |OpenStack   |project_name        |用户所在项目       | 是        |            |    是        |            |
-	// |OpenStack   |username            |用户名             | 是        |            |    是        |            |
-	// |OpenStack   |password            |用户密码           | 是        |            |    是        |            |
-	// |OpenStack   |auth_url            |认证地址           | 是        |            |    否        |            |
-	// |OpenStack   |domain_name         |用户所在的域       | 否        |Default     |    是        |            |
-	// |VMware      |username            |用户名             | 是        |            |    是        |            |
-	// |VMware      |password            |密码               | 是        |            |    是        |            |
-	// |VMware      |host                |主机IP或域名       | 是        |            |    否        |            |
-	// |VMware      |port                |主机端口           | 否        |443         |    否        |            |
-	// |Azure       |directory_id        |目录ID             | 是        |            |    否        |            |
-	// |Azure       |environment         |区域               | 是        |            |    否        |            |
-	// |Azure       |client_id           |客户端ID           | 是        |            |    是        |            |
-	// |Azure       |client_secret       |客户端密码         | 是        |            |    是        |            |
-	// |Huawei      |access_key_id       |秘钥ID             | 是        |            |    是        |            |
-	// |Huawei      |access_key_secret   |秘钥               | 是        |            |    是        |            |
-	// |Huawei      |environment         |区域               | 是        |            |    否        |            |
-	// |Aws         |access_key_id       |秘钥ID             | 是        |            |    是        |            |
-	// |Aws         |access_key_secret   |秘钥               | 是        |            |    是        |            |
-	// |Aws         |environment         |区域               | 是        |            |    否        |            |
-	// |Ucloud      |access_key_id       |秘钥ID             | 是        |            |    是        |            |
-	// |Ucloud      |access_key_secret   |秘钥               | 是        |            |    是        |            |
-	// |Google      |project_id          |项目ID             | 是        |            |    否        |            |
-	// |Google      |client_email        |客户端email        | 是        |            |    否        |            |
-	// |Google      |private_key_id      |秘钥ID             | 是        |            |    是        |            |
-	// |Google      |private_key         |秘钥Key            | 是        |            |    是        |            |
 	Account string `json:"account"`
 
 	// swagger:ignore
 	Secret string
 
-	// 认证地址
+	// Authentication address
 	AccessUrl string `json:"access_url"`
 }
 
@@ -124,7 +87,7 @@ type ProviderConfig struct {
 	ProxyFunc httputils.TransportProxyFunc
 	Debug     bool
 
-	// 仅用来检测cloudpods是否纳管自身环境(system项目id)
+	// Only used to detect whether cloudpods manages its own environment (system project id)
 	AdminProjectId string
 
 	AliyunResourceGroupIds []string
@@ -216,8 +179,8 @@ type ICloudProvider interface {
 	GetSubAccounts() ([]SSubAccount, error)
 	GetAccountId() string
 
-	// region external id 是以provider 做为前缀.因此可以通过该判断条件过滤出同一个provider的regions列表
-	// 但是华为云有点特殊一个provider只对应一个region,因此需要进一步指定region名字，才能找到provider对应的region
+	// The region external id is prefixed with provider. Therefore, this judgment condition can be used to filter out the regions list of the same provider.
+	// However, Huawei Cloud is a bit special. A provider only corresponds to one region. Therefore, it is necessary to further specify the region name to find the region corresponding to the provider.
 	GetCloudRegionExternalIdPrefix() string
 
 	GetStorageClasses(regionId string) []string

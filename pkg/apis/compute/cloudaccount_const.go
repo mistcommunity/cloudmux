@@ -1,20 +1,20 @@
 package compute
 
 const (
-	CLOUD_PROVIDER_ALIYUN         = "Aliyun"
-	CLOUD_PROVIDER_AZURE          = "Azure"
-	CLOUD_PROVIDER_AWS            = "Aws"
-	CLOUD_PROVIDER_GOOGLE         = "Google"
-	CLOUD_PROVIDER_PROXMOX        = "Proxmox"
-	CLOUD_PROVIDER_NUTANIX        = "Nutanix"
-	CLOUD_PROVIDER_VMWARE         = "VMware"
+	CLOUD_PROVIDER_ALIYUN  = "Aliyun"
+	CLOUD_PROVIDER_AZURE   = "Azure"
+	CLOUD_PROVIDER_AWS     = "Aws"
+	CLOUD_PROVIDER_GOOGLE  = "Google"
+	CLOUD_PROVIDER_PROXMOX = "Proxmox"
+	CLOUD_PROVIDER_NUTANIX = "Nutanix"
+	CLOUD_PROVIDER_VMWARE  = "VMware"
 
-	CLOUD_PROVIDER_HEALTH_NORMAL        = "normal"        // 远端处于健康状态
-	CLOUD_PROVIDER_HEALTH_INSUFFICIENT  = "insufficient"  // 不足按需资源余额
-	CLOUD_PROVIDER_HEALTH_SUSPENDED     = "suspended"     // 远端处于冻结状态
-	CLOUD_PROVIDER_HEALTH_ARREARS       = "arrears"       // 远端处于欠费状态
-	CLOUD_PROVIDER_HEALTH_UNKNOWN       = "unknown"       // 未知状态，查询失败
-	CLOUD_PROVIDER_HEALTH_NO_PERMISSION = "no permission" // 没有权限获取账单信息
+	CLOUD_PROVIDER_HEALTH_NORMAL        = "normal"        // The remote end is in a healthy state
+	CLOUD_PROVIDER_HEALTH_INSUFFICIENT  = "insufficient"  // Insufficient on-demand resource balance
+	CLOUD_PROVIDER_HEALTH_SUSPENDED     = "suspended"     // The remote end is in a frozen state
+	CLOUD_PROVIDER_HEALTH_ARREARS       = "arrears"       // The remote end is in arrears
+	CLOUD_PROVIDER_HEALTH_UNKNOWN       = "unknown"       // Unknown state, query failed
+	CLOUD_PROVIDER_HEALTH_NO_PERMISSION = "no permission" // No permission to obtain billing information
 )
 
 const (
