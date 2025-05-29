@@ -1298,8 +1298,6 @@ type ICloudKafka interface {
 
 	IsMultiAz() bool
 
-	GetTopics() ([]SKafkaTopic, error)
-
 	Delete() error
 }
 
