@@ -1182,48 +1182,6 @@ type ICloudgroup interface {
 	Delete() error
 }
 
-type ICloudDnsZone interface {
-	IVirtualResource
-
-	GetZoneType() TDnsZoneType
-
-	GetICloudVpcIds() ([]string, error)
-	AddVpc(*SPrivateZoneVpc) error
-	RemoveVpc(*SPrivateZoneVpc) error
-
-	GetIDnsRecords() ([]ICloudDnsRecord, error)
-	GetIDnsRecordById(id string) (ICloudDnsRecord, error)
-
-	AddDnsRecord(*DnsRecord) (string, error)
-
-	Delete() error
-
-	GetDnsProductType() TDnsProductType
-}
-
-type ICloudDnsRecord interface {
-	GetGlobalId() string
-
-	GetDnsName() string
-	GetStatus() string
-	IsProxied() bool
-	GetEnabled() bool
-	GetDnsType() TDnsType
-	GetDnsValue() string
-	GetTTL() int64
-	GetMxPriority() int64
-	GetExtraAddresses() ([]string, error)
-
-	Update(*DnsRecord) error
-
-	Enable() error
-	Disable() error
-
-	GetPolicyType() TDnsPolicyType
-	GetPolicyValue() TDnsPolicyValue
-	Delete() error
-}
-
 type ICloudVpcPeeringConnection interface {
 	ICloudResource
 

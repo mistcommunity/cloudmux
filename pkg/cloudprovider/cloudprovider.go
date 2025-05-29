@@ -143,12 +143,6 @@ type ICloudProviderFactory interface {
 
 	IsSupportModifyRouteTable() bool
 
-	GetSupportedDnsZoneTypes() []TDnsZoneType
-	GetSupportedDnsTypes() map[TDnsZoneType][]TDnsType
-	GetSupportedDnsPolicyTypes() map[TDnsZoneType][]TDnsPolicyType
-	GetSupportedDnsPolicyValues() map[TDnsPolicyType][]TDnsPolicyValue
-	GetTTLRange(zoneType TDnsZoneType, productType TDnsProductType) TTlRange
-
 	IsSupportSAMLAuth() bool
 
 	GetAccountIdEqualizer() func(origin, now string) bool
@@ -209,10 +203,6 @@ type ICloudProvider interface {
 	CreateSubscription(SubscriptionCreateInput) error
 
 	GetSamlEntityId() string
-
-	GetICloudDnsZones() ([]ICloudDnsZone, error)
-	GetICloudDnsZoneById(id string) (ICloudDnsZone, error)
-	CreateICloudDnsZone(opts *SDnsZoneCreateOptions) (ICloudDnsZone, error)
 
 	GetICloudGlobalVpcs() ([]ICloudGlobalVpc, error)
 	CreateICloudGlobalVpc(opts *GlobalVpcCreateOptions) (ICloudGlobalVpc, error)
@@ -462,18 +452,6 @@ func (self *SBaseProvider) CreateSubscription(SubscriptionCreateInput) error {
 	return ErrNotImplemented
 }
 
-func (self *SBaseProvider) GetICloudDnsZones() ([]ICloudDnsZone, error) {
-	return nil, ErrNotImplemented
-}
-
-func (self *SBaseProvider) GetICloudDnsZoneById(id string) (ICloudDnsZone, error) {
-	return nil, ErrNotImplemented
-}
-
-func (self *SBaseProvider) CreateICloudDnsZone(opts *SDnsZoneCreateOptions) (ICloudDnsZone, error) {
-	return nil, ErrNotImplemented
-}
-
 func (self *SBaseProvider) GetCloudRegionExternalIdPrefix() string {
 	return self.factory.GetId()
 }
@@ -665,26 +643,6 @@ func (factory *baseProviderFactory) IsSupportModifyRouteTable() bool {
 	return false
 }
 
-func (factory *baseProviderFactory) GetSupportedDnsZoneTypes() []TDnsZoneType {
-	return []TDnsZoneType{}
-}
-
-func (factory *baseProviderFactory) GetSupportedDnsTypes() map[TDnsZoneType][]TDnsType {
-	return map[TDnsZoneType][]TDnsType{}
-}
-
-func (factory *baseProviderFactory) GetSupportedDnsPolicyTypes() map[TDnsZoneType][]TDnsPolicyType {
-	return map[TDnsZoneType][]TDnsPolicyType{}
-}
-
-func (factory *baseProviderFactory) GetSupportedDnsPolicyValues() map[TDnsPolicyType][]TDnsPolicyValue {
-	return map[TDnsPolicyType][]TDnsPolicyValue{}
-}
-
-func (factory *baseProviderFactory) GetTTLRange(zoneType TDnsZoneType, productType TDnsProductType) TTlRange {
-	return TTlRange{}
-}
-
 func (factory *baseProviderFactory) GetAccountIdEqualizer() func(origin, now string) bool {
 	return func(origin, now string) bool {
 		if len(now) > 0 && now != origin {
@@ -692,26 +650,6 @@ func (factory *baseProviderFactory) GetAccountIdEqualizer() func(origin, now str
 		}
 		return true
 	}
-}
-
-type SDnsCapability struct {
-	ZoneTypes    []TDnsZoneType
-	DnsTypes     map[TDnsZoneType][]TDnsType
-	PolicyTypes  map[TDnsZoneType][]TDnsPolicyType
-	PolicyValues map[TDnsPolicyType][]TDnsPolicyValue
-}
-
-func GetDnsCapabilities() map[string]SDnsCapability {
-	capabilities := map[string]SDnsCapability{}
-	for provider, driver := range providerTable {
-		capabilities[provider] = SDnsCapability{
-			ZoneTypes:    driver.GetSupportedDnsZoneTypes(),
-			DnsTypes:     driver.GetSupportedDnsTypes(),
-			PolicyTypes:  driver.GetSupportedDnsPolicyTypes(),
-			PolicyValues: driver.GetSupportedDnsPolicyValues(),
-		}
-	}
-	return capabilities
 }
 
 type SPremiseBaseProviderFactory struct {
