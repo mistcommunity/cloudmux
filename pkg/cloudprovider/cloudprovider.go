@@ -1,17 +1,3 @@
-// Copyright 2019 Yunion
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package cloudprovider
 
 import (
@@ -26,29 +12,19 @@ import (
 )
 
 type SCloudaccountCredential struct {
-	// 账号所在的项目 (openstack)
-	ProjectName string `json:"project_name"`
-
-	// 账号所在的域 (openstack)
-	// default: Default
-	DomainName string `json:"domain_name"`
-
-	// 用户名 (openstack, zstack, esxi)
+	// 用户名 (openstack, esxi)
 	Username string `json:"username"`
 
-	// 密码 (openstack, zstack, esxi)
+	// 密码 (openstack, esxi)
 	Password string `json:"password"`
 
-	// 认证地址 (openstack,zstack)
-	AuthUrl string `json:"auto_url"`
-
-	// 秘钥id (Aliyun, Aws, huawei, ucloud, ctyun, zstack, s3)
+	// 秘钥id (Aliyun, Aws)
 	AccessKeyId string `json:"access_key_id"`
 
-	// 秘钥key (Aliyun, Aws, huawei, ucloud, ctyun, zstack, s3)
+	// 秘钥key (Aliyun, Aws)
 	AccessKeySecret string `json:"access_key_secret"`
 
-	// 环境 (Azure, Aws, huawei, ctyun, aliyun)
+	// 环境 (Azure, Aws, aliyun)
 	Environment string `json:"environment"`
 
 	// 目录ID (Azure)
@@ -66,18 +42,6 @@ type SCloudaccountCredential struct {
 	// 主机端口 (esxi)
 	Port int `json:"port"`
 
-	// 端点 (s3) 或 Apsara(飞天)
-	Endpoint string `json:"endpoint"`
-
-	// app id (Qcloud)
-	AppId string `json:"app_id"`
-
-	//秘钥ID (Qcloud)
-	SecretId string `json:"secret_id"`
-
-	//秘钥key (Qcloud)
-	SecretKey string `json:"secret_key"`
-
 	// 飞天允许的最高组织id, 默认为1
 	OrganizationId int `json:"organization_id"`
 
@@ -90,14 +54,7 @@ type SCloudaccountCredential struct {
 	// Google服务账号秘钥 (gcp)
 	GCPPrivateKey string `json:"gcp_private_key"`
 
-	OracleTenancyOCID string `json:"oracle_tenancy_ocid"`
-	OracleUserOCID    string `json:"oracle_user_ocid"`
-	OraclePrivateKey  string `json:"oracle_private_key"`
-
 	RegionId string
-
-	// Huawei Cloud Stack Online
-	*SHCSOEndpoints
 }
 
 type SCloudaccount struct {
@@ -151,7 +108,7 @@ type ProviderConfig struct {
 	Id   string
 	Name string
 
-	// Vendor are names like Aliyun, OpenStack, etc.
+	// Vendor are names like Aliyun, etc.
 	Vendor  string
 	URL     string
 	Account string

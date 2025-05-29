@@ -1,17 +1,3 @@
-// Copyright 2019 Yunion
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package compute
 
 const (
@@ -82,17 +68,6 @@ const (
 	ALIYUN_DBINSTANCE_CATEGORY_ALWAYSON = "always_on"         //集群版
 	ALIYUN_DBINSTANCE_CATEGORY_FINANCE  = "finance"           //金融版
 
-	//腾讯云实例类型
-	QCLOUD_DBINSTANCE_CATEGORY_BASIC   = "basic" //基础版
-	QCLOUD_DBINSTANCE_CATEGORY_HA      = "ha"    //高可用
-	QCLOUD_DBINSTANCE_CATEGORY_FINANCE = "fe"    //金融版
-	QCLOUD_DBINSTANCE_CATEGORY_TDSQL   = "tdsql" //TDSQL
-
-	//华为云实例类型
-	HUAWEI_DBINSTANCE_CATEGORY_HA      = "ha"      //主备
-	HUAWEI_DBINSTANCE_CATEGORY_SINGLE  = "single"  //单机
-	HUAWEI_DBINSTANCE_CATEGORY_REPLICA = "replica" //只读
-
 	//谷歌云实例类型
 	GOOGLE_DBINSTANCE_CATEGORY_REGIONAL = "Regional" // 高可用性（区域级）
 	GOOGLE_DBINSTANCE_CATEGORY_ZONAL    = "Zonal"    // 单个地区
@@ -117,20 +92,8 @@ const (
 	ALIYUN_DBINSTANCE_STORAGE_TYPE_CLOUD_ESSD = "cloud_essd" //ESSD云盘
 	ALIYUN_DBINSTANCE_STORAGE_TYPE_CLOUD_SSD  = "cloud_ssd"  //SSD云盘
 
-	//华为云存储类型
-	HUAWEI_DBINSTANCE_STORAGE_TYPE_ULTRAHIGH    = "ULTRAHIGH" //超高IO云硬盘
-	HUAWEI_DBINSTANCE_STORAGE_TYPE_ULTRAHIGHPRO = "ULTRAHIGHPRO"
-	HUAWEI_DBINSTANCE_STORAGE_TYPE_COMMON       = "COMMON"
-	HUAWEI_DBINSTANCE_STORAGE_TYPE_HIGH         = "HIGH"
-
-	//腾讯云
-	QCLOUD_DBINSTANCE_STORAGE_TYPE_LOCAL_SSD = "local_ssd" //本地盘SSD盘
-	QCLOUD_DBINSTANCE_STORAGE_TYPE_CLOUD_SSD = "cloud_ssd" //SSD云盘
-
 	// Azure
 	AZURE_DBINSTANCE_STORAGE_TYPE_DEFAULT = "default"
-	// 金山云
-	KSYUN_DBINSTANCE_STORAGE_TYPE_DEFAULT = "default"
 )
 
 var (
