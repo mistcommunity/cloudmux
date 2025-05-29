@@ -1,4 +1,3 @@
-
 package google
 
 import (
@@ -44,32 +43,6 @@ func (self *SGoogleClient) WaitOperation(id string, resource, action string) (st
 	targetLink := ""
 	err := cloudprovider.Wait(time.Second*5, time.Minute*5, func() (bool, error) {
 		operation, err := self.GetOperation(id)
-		if err != nil {
-			return false, err
-		}
-		log.Debugf("%s %s operation status: %s expect %s", action, resource, operation.Status, OPERATION_STATUS_DONE)
-		if operation.Status == OPERATION_STATUS_DONE {
-			targetLink = operation.TargetLink
-			return true, nil
-		}
-		return false, nil
-	})
-	return targetLink, err
-}
-
-func (region *SRegion) GetRdsOperation(id string) (*SOperation, error) {
-	operation := &SOperation{}
-	err := region.rdsGet(id, &operation)
-	if err != nil {
-		return nil, err
-	}
-	return operation, nil
-}
-
-func (region *SRegion) WaitRdsOperation(id string, resource, action string) (string, error) {
-	targetLink := ""
-	err := cloudprovider.Wait(time.Second*5, time.Minute*20, func() (bool, error) {
-		operation, err := region.GetRdsOperation(id)
 		if err != nil {
 			return false, err
 		}

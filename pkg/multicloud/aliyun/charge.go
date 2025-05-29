@@ -1,21 +1,11 @@
-
 package aliyun
 
 import (
 	"time"
-
-	api "yunion.io/x/cloudmux/pkg/apis/billing"
 )
 
 func convertChargeType(ct TChargeType) string {
-	switch ct {
-	case PrePaidInstanceChargeType, PrePaidDBInstanceChargeType:
-		return api.BILLING_TYPE_PREPAID
-	case PostPaidInstanceChargeType, PostPaidDBInstanceChargeType:
-		return api.BILLING_TYPE_POSTPAID
-	default:
-		return ""
-	}
+	return ""
 }
 
 func convertExpiredAt(expired time.Time) time.Time {

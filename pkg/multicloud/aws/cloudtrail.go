@@ -24,7 +24,7 @@ type SEventResource struct {
 
 	// The type of a resource referenced by the event returned. When the resource
 	// type cannot be determined, null is returned. Some examples of resource types
-	// are: Instance for EC2, Trail for CloudTrail, DBInstance for RDS, and AccessKey
+	// are: Instance for EC2, Trail for CloudTrail, for RDS, and AccessKey
 	// for IAM. To learn more about how to look up and filter events by the resource
 	// types supported for a service, see Filtering CloudTrail Events (https://docs.aws.amazon.com/awscloudtrail/latest/userguide/view-cloudtrail-events-console.html#filtering-cloudtrail-events).
 	ResourceType string `type:"string"`

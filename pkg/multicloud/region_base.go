@@ -1,4 +1,3 @@
-
 package multicloud
 
 import (
@@ -86,32 +85,12 @@ func (self *SRegion) GetINetworkInterfaces() ([]cloudprovider.ICloudNetworkInter
 	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetINetworkInterfaces")
 }
 
-func (self *SRegion) GetIDBInstances() ([]cloudprovider.ICloudDBInstance, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIDBInstances")
-}
-
-func (self *SRegion) GetIDBInstanceById(instanceId string) (cloudprovider.ICloudDBInstance, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIDBInstanceById")
-}
-
-func (self *SRegion) GetIDBInstanceBackups() ([]cloudprovider.ICloudDBInstanceBackup, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIDBInstanceBackups")
-}
-
-func (self *SRegion) GetIDBInstanceBackupById(backupId string) (cloudprovider.ICloudDBInstanceBackup, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIDBInstanceBackupById")
-}
-
 func (self *SRegion) GetIElasticcaches() ([]cloudprovider.ICloudElasticcache, error) {
 	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIElasticcaches")
 }
 
 func (self *SRegion) GetIElasticcacheSkus() ([]cloudprovider.ICloudElasticcacheSku, error) {
 	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIElasticcacheSkus")
-}
-
-func (self *SRegion) CreateIDBInstance(desc *cloudprovider.SManagedDBInstanceCreateConfig) (cloudprovider.ICloudDBInstance, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "CreateIDBInstance")
 }
 
 func (self *SRegion) CreateIElasticcaches(ec *cloudprovider.SCloudElasticCacheInput) (cloudprovider.ICloudElasticcache, error) {
@@ -212,10 +191,6 @@ func (self *SRegion) GetICloudApps() ([]cloudprovider.ICloudApp, error) {
 
 func (self *SRegion) GetICloudAppById(id string) (cloudprovider.ICloudApp, error) {
 	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetICloudAppById")
-}
-
-func (self *SRegion) GetIDBInstanceSkus() ([]cloudprovider.ICloudDBInstanceSku, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetIDBInstanceSkus")
 }
 
 func (self *SRegion) GetICloudNatSkus() ([]cloudprovider.ICloudNatSku, error) {

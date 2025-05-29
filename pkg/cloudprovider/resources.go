@@ -126,14 +126,6 @@ type ICloudRegion interface {
 	GetIBucketById(name string) (ICloudBucket, error)
 	GetIBucketByName(name string) (ICloudBucket, error)
 
-	GetIDBInstances() ([]ICloudDBInstance, error)
-	GetIDBInstanceById(instanceId string) (ICloudDBInstance, error)
-	GetIDBInstanceBackups() ([]ICloudDBInstanceBackup, error)
-	GetIDBInstanceBackupById(backupId string) (ICloudDBInstanceBackup, error)
-	GetIDBInstanceSkus() ([]ICloudDBInstanceSku, error)
-
-	CreateIDBInstance(desc *SManagedDBInstanceCreateConfig) (ICloudDBInstance, error)
-
 	GetIElasticcaches() ([]ICloudElasticcache, error)
 	GetIElasticcacheSkus() ([]ICloudElasticcacheSku, error)
 	GetIElasticcacheById(id string) (ICloudElasticcache, error)
@@ -973,116 +965,6 @@ type ICloudInterfaceAddress interface {
 	IsPrimary() bool
 }
 
-type ICloudDBInstance interface {
-	IVirtualResource
-	IBillingResource
-
-	Reboot() error
-
-	GetMasterInstanceId() string
-	GetSecurityGroupIds() ([]string, error)
-	SetSecurityGroups(ids []string) error
-	GetPort() int
-	GetEngine() string
-	GetEngineVersion() string
-	//实例规格
-	GetInstanceType() string
-
-	GetVcpuCount() int
-	GetVmemSizeMB() int //MB
-	GetDiskSizeGB() int
-	GetDiskSizeUsedMB() int
-	//基础版、高可用？
-	GetCategory() string
-	GetStorageType() string
-
-	GetMaintainTime() string
-
-	GetConnectionStr() string
-	GetInternalConnectionStr() string
-	GetZone1Id() string
-	GetZone2Id() string
-	GetZone3Id() string
-	GetIVpcId() string
-	GetIops() int
-
-	GetDBNetworks() ([]SDBInstanceNetwork, error)
-	GetIDBInstanceParameters() ([]ICloudDBInstanceParameter, error)
-	GetIDBInstanceDatabases() ([]ICloudDBInstanceDatabase, error)
-	GetIDBInstanceAccounts() ([]ICloudDBInstanceAccount, error)
-	GetIDBInstanceBackups() ([]ICloudDBInstanceBackup, error)
-
-	ChangeConfig(ctx context.Context, config *SManagedDBInstanceChangeConfig) error
-
-	OpenPublicConnection() error
-	ClosePublicConnection() error
-
-	CreateDatabase(conf *SDBInstanceDatabaseCreateConfig) error
-	CreateAccount(conf *SDBInstanceAccountCreateConfig) error
-
-	CreateIBackup(conf *SDBInstanceBackupCreateConfig) (string, error)
-
-	RecoveryFromBackup(conf *SDBInstanceRecoveryConfig) error
-
-	Update(ctx context.Context, input SDBInstanceUpdateOptions) error
-
-	Delete() error
-}
-
-type ICloudDBInstanceParameter interface {
-	GetGlobalId() string
-	GetKey() string
-	GetValue() string
-	GetDescription() string
-}
-
-type ICloudDBInstanceBackup interface {
-	IVirtualResource
-
-	GetEngine() string
-	GetEngineVersion() string
-	GetDBInstanceId() string
-	GetStartTime() time.Time
-	GetEndTime() time.Time
-	GetBackupSizeMb() int
-	GetDBNames() string
-	GetBackupMode() string
-	GetBackupMethod() TBackupMethod
-
-	CreateICloudDBInstance(opts *SManagedDBInstanceCreateConfig) (ICloudDBInstance, error)
-
-	Delete() error
-}
-
-type ICloudDBInstanceDatabase interface {
-	ICloudResource
-
-	GetCharacterSet() string
-
-	Delete() error
-}
-
-type ICloudDBInstanceAccount interface {
-	GetName() string
-	GetStatus() string
-	GetHost() string
-
-	GetIDBInstanceAccountPrivileges() ([]ICloudDBInstanceAccountPrivilege, error)
-
-	ResetPassword(password string) error
-	GrantPrivilege(database, privilege string) error
-	RevokePrivilege(database string) error
-
-	Delete() error
-}
-
-type ICloudDBInstanceAccountPrivilege interface {
-	GetGlobalId() string
-
-	GetPrivilege() string
-	GetDBName() string
-}
-
 type ICloudElasticcacheSku interface {
 	GetName() string
 	GetGlobalId() string
@@ -1659,29 +1541,6 @@ type IAppBackup interface {
 
 type ICloudAppEnvironment interface {
 	IVirtualResource
-}
-
-type ICloudDBInstanceSku interface {
-	GetName() string
-	GetGlobalId() string
-	GetStatus() string
-	GetEngine() string
-	GetEngineVersion() string
-	GetStorageType() string
-	GetDiskSizeStep() int
-	GetMaxDiskSizeGb() int
-	GetMinDiskSizeGb() int
-	GetIOPS() int
-	GetTPS() int
-	GetQPS() int
-	GetMaxConnections() int
-	GetVcpuCount() int
-	GetVmemSizeMb() int
-	GetCategory() string
-	GetZone1Id() string
-	GetZone2Id() string
-	GetZone3Id() string
-	GetZoneId() string
 }
 
 type ICloudNatSku interface {

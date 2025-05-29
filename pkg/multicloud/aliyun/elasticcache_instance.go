@@ -1,4 +1,3 @@
-
 package aliyun
 
 import (
@@ -99,15 +98,14 @@ type SElasticcacheAttribute struct {
 }
 
 type SNetInfo struct {
-	ConnectionString  string  `json:"ConnectionString"`
-	Port              string  `json:"Port"`
-	DBInstanceNetType string  `json:"DBInstanceNetType"`
-	VPCID             string  `json:"VPCId"`
-	VPCInstanceID     string  `json:"VPCInstanceId"`
-	IPAddress         string  `json:"IPAddress"`
-	IPType            string  `json:"IPType"`
-	Upgradeable       string  `json:"Upgradeable"`
-	ExpiredTime       *string `json:"ExpiredTime,omitempty"`
+	ConnectionString string  `json:"ConnectionString"`
+	Port             string  `json:"Port"`
+	VPCID            string  `json:"VPCId"`
+	VPCInstanceID    string  `json:"VPCInstanceId"`
+	IPAddress        string  `json:"IPAddress"`
+	IPType           string  `json:"IPType"`
+	Upgradeable      string  `json:"Upgradeable"`
+	ExpiredTime      *string `json:"ExpiredTime,omitempty"`
 }
 
 func (self *SElasticcache) GetId() string {

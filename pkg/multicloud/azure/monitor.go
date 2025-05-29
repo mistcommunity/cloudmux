@@ -1,4 +1,3 @@
-
 package azure
 
 import (
@@ -16,7 +15,6 @@ import (
 	"yunion.io/x/pkg/util/timeutils"
 	"yunion.io/x/pkg/utils"
 
-	api "yunion.io/x/cloudmux/pkg/apis/compute"
 	"yunion.io/x/cloudmux/pkg/cloudprovider"
 )
 
@@ -109,8 +107,6 @@ const (
 // https://docs.microsoft.com/en-us/azure/azure-monitor/essentials/metrics-supported
 func (self *SAzureClient) GetMetrics(opts *cloudprovider.MetricListOptions) ([]cloudprovider.MetricValues, error) {
 	switch opts.ResourceType {
-	case cloudprovider.METRIC_RESOURCE_TYPE_RDS:
-		return self.GetRdsMetrics(opts)
 	case cloudprovider.METRIC_RESOURCE_TYPE_SERVER:
 		return self.GetEcsMetrics(opts)
 	case cloudprovider.METRIC_RESOURCE_TYPE_REDIS:
@@ -290,58 +286,6 @@ func (self *SAzureClient) GetK8sMetrics(opts *cloudprovider.MetricListOptions) (
 	metricnames := "node_cpu_usage_percentage,node_memory_rss_percentage,node_disk_usage_percentage,node_network_in_bytes,node_network_out_bytes"
 	filter := fmt.Sprintf("node eq '*'")
 	return self.getMetricValues(opts.ResourceId, metricnamespace, metricnames, nil, filter, opts.StartTime, opts.EndTime)
-}
-
-func (self *SAzureClient) GetRdsMetrics(opts *cloudprovider.MetricListOptions) ([]cloudprovider.MetricValues, error) {
-	ret := []cloudprovider.MetricValues{}
-	metricnamespace, metricnames := "", ""
-	rdsType := RDS_TYPE_SERVERS
-	if strings.Contains(opts.ResourceId, strings.ToLower(RDS_TYPE_FLEXIBLE_SERVERS)) {
-		rdsType = RDS_TYPE_FLEXIBLE_SERVERS
-	}
-	switch opts.Engine {
-	case api.DBINSTANCE_TYPE_MYSQL:
-		metricnamespace = fmt.Sprintf("Microsoft.DBforMySQL/%s", rdsType)
-		metricnames = "cpu_percent,memory_percent,storage_percent,network_bytes_ingress,network_bytes_egress,io_consumption_percent,connections_failed,active_connections"
-		if strings.Contains(opts.ResourceId, "/flexibleservers/") {
-			// cpu_percent,memory_percent,network_bytes_egress,network_bytes_ingress,active_connections,total_connections,aborted_connections,Queries,io_consumption_percent,storage_io_count,storage_percent,storage_used,data_storage_used,ibdata1_storage_used,binlog_storage_used,others_storage_used,storage_limit,backup_storage_used,replication_lag,cpu_credits_remaining,cpu_credits_consumed,Com_select,Com_update,Com_insert,Com_delete,Slow_queries,Com_create_db,Com_drop_db,Com_alter_table,Com_create_table,Com_drop_table,Innodb_buffer_pool_reads,Innodb_buffer_pool_read_requests,Innodb_buffer_pool_pages_free,Innodb_buffer_pool_pages_data,Innodb_buffer_pool_pages_dirty,storage_throttle_count,serverlog_storage_percent,serverlog_storage_usage,serverlog_storage_limit,Replica_IO_Running,Replica_SQL_Running,HA_IO_status,HA_SQL_status,HA_replication_lag,Innodb_row_lock_time,Innodb_data_writes,Innodb_row_lock_waits,Innodb_buffer_pool_pages_flushed,available_memory_bytes,Threads_running
-			metricnames = "cpu_percent,memory_percent,storage_percent,network_bytes_ingress,network_bytes_egress,io_consumption_percent,active_connections"
-		}
-	case api.DBINSTANCE_TYPE_MARIADB:
-		metricnamespace = "Microsoft.DBforMariaDB/servers"
-		metricnames = "cpu_percent,memory_percent,storage_percent,network_bytes_ingress,network_bytes_egress,io_consumption_percent,connections_failed,active_connections"
-	case api.DBINSTANCE_TYPE_SQLSERVER:
-		metricnamespace = "Microsoft.Sql/servers/databases"
-		metricnames = "cpu_percent,connection_successful,sqlserver_process_memory_percent,connection_successful,connection_failed"
-		result := struct {
-			Value []SSQLServerDatabase
-		}{}
-		err := self.get(opts.ResourceId+"/databases", url.Values{}, &result)
-		if err != nil {
-			return nil, err
-		}
-		for i := range result.Value {
-			if result.Value[i].Name == "master" {
-				continue
-			}
-			metrics, err := self.getMetricValues(result.Value[i].ID, metricnamespace, metricnames, map[string]string{cloudprovider.METRIC_TAG_DATABASE: result.Value[i].Name}, "", opts.StartTime, opts.EndTime)
-			if err != nil {
-				log.Errorf("error: %v", err)
-				continue
-			}
-			for j := range metrics {
-				metrics[j].Id = opts.ResourceId
-				ret = append(ret, metrics[j])
-			}
-		}
-		return ret, nil
-	case api.DBINSTANCE_TYPE_POSTGRESQL:
-		metricnamespace = fmt.Sprintf("Microsoft.DBforPostgreSQL/%s", rdsType)
-		metricnames = "cpu_percent,memory_percent,storage_percent,network_bytes_ingress,network_bytes_egress,io_consumption_percent,connections_failed,active_connections"
-	default:
-		return nil, errors.Wrapf(cloudprovider.ErrNotSupported, opts.Engine)
-	}
-	return self.getMetricValues(opts.ResourceId, metricnamespace, metricnames, nil, "", opts.StartTime, opts.EndTime)
 }
 
 type MetrifDefinitions struct {

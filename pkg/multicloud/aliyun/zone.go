@@ -1,4 +1,3 @@
-
 package aliyun
 
 import (
@@ -22,11 +21,9 @@ var LOCAL_STORAGES = []string{
 }
 
 const (
-	PrePaidInstanceChargeType    TChargeType = "PrePaid"
-	PrePaidDBInstanceChargeType  TChargeType = "Prepaid"
-	PostPaidInstanceChargeType   TChargeType = "PostPaid"
-	PostPaidDBInstanceChargeType TChargeType = "Postpaid"
-	DefaultInstanceChargeType                = PostPaidInstanceChargeType
+	PrePaidInstanceChargeType  TChargeType = "PrePaid"
+	PostPaidInstanceChargeType TChargeType = "PostPaid"
+	DefaultInstanceChargeType              = PostPaidInstanceChargeType
 )
 
 type SpotStrategyType string
