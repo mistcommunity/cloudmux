@@ -198,7 +198,6 @@ type ICloudProvider interface {
 	GetIClouduserByName(name string) (IClouduser, error)
 	CreateIClouduser(conf *SClouduserCreateConfig) (IClouduser, error)
 	CreateICloudSAMLProvider(opts *SAMLProviderCreateOptions) (ICloudSAMLProvider, error)
-	GetICloudSAMLProviders() ([]ICloudSAMLProvider, error)
 	GetICloudroles() ([]ICloudrole, error)
 	GetICloudroleById(id string) (ICloudrole, error)
 	GetICloudroleByName(name string) (ICloudrole, error)
@@ -429,10 +428,6 @@ func (self *SBaseProvider) GetIClouduserByName(name string) (IClouduser, error) 
 
 func (self *SBaseProvider) CreateIClouduser(conf *SClouduserCreateConfig) (IClouduser, error) {
 	return nil, ErrNotImplemented
-}
-
-func (self *SBaseProvider) GetICloudSAMLProviders() ([]ICloudSAMLProvider, error) {
-	return nil, errors.Wrapf(ErrNotImplemented, "GetICloudSAMLProviders")
 }
 
 func (self *SBaseProvider) GetICloudroles() ([]ICloudrole, error) {

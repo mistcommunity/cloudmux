@@ -340,18 +340,6 @@ func (self *SAwsProvider) CreateICloudDnsZone(opts *cloudprovider.SDnsZoneCreate
 	return self.client.CreateDnsZone(opts)
 }
 
-func (self *SAwsProvider) GetICloudSAMLProviders() ([]cloudprovider.ICloudSAMLProvider, error) {
-	return self.client.GetICloudSAMLProviders()
-}
-
-func (self *SAwsProvider) CreateICloudSAMLProvider(opts *cloudprovider.SAMLProviderCreateOptions) (cloudprovider.ICloudSAMLProvider, error) {
-	sp, err := self.client.CreateSAMLProvider(opts.Name, opts.Metadata.String())
-	if err != nil {
-		return nil, errors.Wrap(err, "CreateSAMLProvider")
-	}
-	return sp, nil
-}
-
 func (self *SAwsProvider) GetICloudroles() ([]cloudprovider.ICloudrole, error) {
 	return self.client.GetICloudroles()
 }

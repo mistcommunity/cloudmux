@@ -474,18 +474,6 @@ func (self *SAliyunProvider) GetICloudroleByName(name string) (cloudprovider.ICl
 	return role, nil
 }
 
-func (self *SAliyunProvider) GetICloudSAMLProviders() ([]cloudprovider.ICloudSAMLProvider, error) {
-	return self.client.GetICloudSAMLProviders()
-}
-
-func (self *SAliyunProvider) CreateICloudSAMLProvider(opts *cloudprovider.SAMLProviderCreateOptions) (cloudprovider.ICloudSAMLProvider, error) {
-	sp, err := self.client.CreateSAMLProvider(opts.Name, opts.Metadata.String(), "")
-	if err != nil {
-		return nil, errors.Wrapf(err, "CreateSAMLProvider")
-	}
-	return sp, nil
-}
-
 func (self *SAliyunProvider) GetICloudCDNDomains() ([]cloudprovider.ICloudCDNDomain, error) {
 	return self.client.GetICloudCDNDomains()
 }
