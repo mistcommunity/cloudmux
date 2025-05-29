@@ -181,18 +181,6 @@ func (self *SRegion) GetICloudNatSkus() ([]cloudprovider.ICloudNatSku, error) {
 	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetICloudNatSkus")
 }
 
-func (self *SRegion) GetICloudKubeClusters() ([]cloudprovider.ICloudKubeCluster, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetICloudKubeClusters")
-}
-
-func (self *SRegion) CreateIKubeCluster(opts *cloudprovider.KubeClusterCreateOptions) (cloudprovider.ICloudKubeCluster, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "CreateIKubeCluster")
-}
-
-func (self *SRegion) GetICloudKubeClusterById(id string) (cloudprovider.ICloudKubeCluster, error) {
-	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetICloudKubeClusterById")
-}
-
 func (self *SRegion) GetICloudTablestores() ([]cloudprovider.ICloudTablestore, error) {
 	return nil, errors.Wrapf(cloudprovider.ErrNotImplemented, "GetICloudTablestores")
 }

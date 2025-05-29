@@ -163,10 +163,6 @@ type ICloudRegion interface {
 	GetICloudApps() ([]ICloudApp, error)
 	GetICloudAppById(id string) (ICloudApp, error)
 
-	GetICloudKubeClusters() ([]ICloudKubeCluster, error)
-	GetICloudKubeClusterById(id string) (ICloudKubeCluster, error)
-	CreateIKubeCluster(opts *KubeClusterCreateOptions) (ICloudKubeCluster, error)
-
 	GetICloudTablestores() ([]ICloudTablestore, error)
 
 	GetIModelartsPools() ([]ICloudModelartsPool, error)
@@ -1391,42 +1387,6 @@ type ICloudCDNDomain interface {
 	GetReferer() (*SCDNReferer, error)
 	// 浏览器缓存配置
 	GetMaxAge() (*SCDNMaxAge, error)
-
-	Delete() error
-}
-
-type ICloudKubeCluster interface {
-	ICloudEnabledResource
-
-	GetKubeConfig(private bool, expireMinutes int) (*SKubeconfig, error)
-
-	GetVersion() string
-	GetVpcId() string
-	GetNetworkIds() []string
-
-	GetIKubeNodePools() ([]ICloudKubeNodePool, error)
-	CreateIKubeNodePool(opts *KubeNodePoolCreateOptions) (ICloudKubeNodePool, error)
-	GetIKubeNodes() ([]ICloudKubeNode, error)
-
-	Delete(isRetain bool) error
-}
-
-type ICloudKubeNode interface {
-	ICloudResource
-
-	GetINodePoolId() string
-}
-
-type ICloudKubeNodePool interface {
-	ICloudResource
-
-	GetMinInstanceCount() int
-	GetMaxInstanceCount() int
-	GetDesiredInstanceCount() int
-	GetRootDiskSizeGb() int
-
-	GetInstanceTypes() []string
-	GetNetworkIds() []string
 
 	Delete() error
 }
